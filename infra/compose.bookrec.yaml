@@ -1,0 +1,11 @@
+services:
+  master:
+    image: bigdata/spark-bookrec:3.5.5
+    volumes:
+      - /home/bigdata/spark-book-recommender:/workspace/bookrec
+
+  worker1:
+    image: bigdata/spark-bookrec:3.5.5
+
+  worker2:
+    image: bigdata/spark-bookrec:3.5.5
