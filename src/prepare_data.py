@@ -1,0 +1,73 @@
+
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.types import StructType, StructField, IntegerType
+
+HDFS_ROOT = "hdfs://master:9000/user/root/bookrec"
+
+spark = SparkSession.builder \
+    .appName("BookRec-DataPreparation") \
+    .getOrCreate()
+
+spark.sparkContext.setLogLevel("WARN")
+
+# 1. 读取评分数据
+rating_schema = StructType([
+    StructField("user_id", IntegerType(), True),
+    StructField("book_id", IntegerType(), True),
+    StructField("rating", IntegerType(), True)
+])
+
+ratings = spark.read \
+    .option("header", True) \
+    .schema(rating_schema) \
+    .csv(f"{HDFS_ROOT}/raw/ratings.csv")
+
+# 2. 读取图书数据
+books = spark.read \
+    .option("header", True) \
+    .option("escape", '"') \
+    .csv(f"{HDFS_ROOT}/raw/books.csv")
+
+# 3. 规范化评分数据
+# 前期质量检查已确认无空值和重复评分
+clean_ratings = ratings.select(
+    "user_id", "book_id", "rating"
+)
+
+# 4. 规范化图书数据
+# 保留其他原始字段，以供后续扩展使用
+clean_books = books \
+    .withColumn("book_id", F.col("book_id").cast("int")) \
+    .withColumn("average_rating", F.col("average_rating").cast("double")) \
+    .withColumn("ratings_count", F.col("ratings_count").cast("long")) \
+    .withColumn(
+        "original_publication_year",
+        F.col("original_publication_year").cast("double")
+    ) \
+    .withColumn("title", F.trim(F.col("title"))) \
+    .withColumn("authors", F.trim(F.col("authors")))
+
+# 5. 检查图书 ID 的类型转换结果
+invalid_ids = clean_books.filter(
+    F.col("book_id").isNull()
+).count()
+
+if invalid_ids != 0:
+    raise ValueError(f"Invalid book IDs: {invalid_ids}")
+
+# 6. 保存为 Parquet
+# 仅覆盖本项目 processed 目录，不修改 raw 数据
+clean_ratings.write \
+    .mode("overwrite") \
+    .parquet(f"{HDFS_ROOT}/processed/ratings")
+
+clean_books.write \
+    .mode("overwrite") \
+    .parquet(f"{HDFS_ROOT}/processed/books")
+
+print("===== Data Preparation Completed =====")
+print("Ratings:", clean_ratings.count())
+print("Books:", clean_books.count())
+
+spark.stop()
