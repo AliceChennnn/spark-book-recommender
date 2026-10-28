@@ -3,9 +3,9 @@
 from dataclasses import dataclass
 
 try:
-    from .datasets import DatasetSpec
+    from .datasets import DatasetSpec, require_mapping_mode
 except ImportError:
-    from datasets import DatasetSpec
+    from datasets import DatasetSpec, require_mapping_mode
 
 
 @dataclass
@@ -81,8 +81,9 @@ def _mapping(ids, internal, previous=None):
     return previous.select("source_id", internal).unionByName(added.select("source_id", internal))
 
 
-def adapt_frames(ratings, books, spec, previous=None):
+def adapt_frames(ratings, books, spec, previous=None, *, mapping_mode=None):
     """Reject ambiguity before mapping; preserve exact source strings, including leading zeros."""
+    require_mapping_mode(mapping_mode, previous)
     from pyspark.sql import functions as F
     from pyspark.sql.types import StringType
     if previous is not None and (previous.dataset_id, previous.mapping_version) != (

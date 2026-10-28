@@ -68,7 +68,15 @@ CSV 第一阶段只支持带 header 的逗号分隔输入。配置列名明确�
 
 来源 ID 必须为非空 STRING，保持原文；`001` 和 `1` 不合并，不把 ISBN / UUID / 任意字符串 cast 为 INT。首次对唯一原始 ID 按确定性字典序分配正 INT，内部 user / book 分别建表，可由映射反查，检查重复、冲突和 INT 上限。
 
-映射在一个不可变发布批次内稳定，与输入行顺序无关。对同一映射体系扩充数据时，必须用 `--previous-config` 读取已发布且绑定一致的映射，保留原 ID、新 ID 在旧最大值后追加；不能在同一 mapping_version 下忘记旧映射后重新编号。若重建编号，应使用新的 mapping_version，旧模型随之不可复用。全局排序目前使用 Spark 窗口，适合建立正确性基线；大规模词典的性能优化待真实规模明确。
+映射在一个不可变发布批次内稳定，与输入行顺序无关。导入入口必须显式指定 `--mapping-mode create` 或 `--mapping-mode extend`，库函数 prepare / adapt_frames 同样要求传入 mapping_mode，不再把缺少前序配置自动当作首次创建。
+
+- create：首次创建一个尚未使用的 mapping_version，不能提供 previous-config。写入前通过 Hadoop 文件系统元数据检查 `releases/*/<mapping_version>`；任何旧数据批次或部分目录已使用该版本时均拒绝，即使本次 data_version 不同。
+- extend：必须提供 `--previous-config`，且数据集 / 映射版本相同；读取并验证既有发布清单，要求前序配置指向唯一最新映射批次。保留所有旧 ID（包括新输入暂未出现的来源 ID），新 ID 仅在旧最大值后追加。不按 data_version 字典序猜“最新”，避免 r10 / r2 顺序错误。
+- 发布清单记录 mapping_mode 和 mapping_parent 绑定，目录结构不变。单个旧格式发布清单可作为首次创建的根；多个无父记录的旧批次、分叉、断裂 / 循环谱系、缺失或不可读的清单一律拒绝，不能静默重新编号。过旧的 previous-config 也拒绝，防止遗漏后续已分配的 ID。
+
+若重建编号，应使用新的 mapping_version，旧模型随之不可复用。纯内存 adapt_frames 不查询发布目录，持久化导入须经 prepare 的历史门禁。全局排序仍使用原 Spark 窗口，本轮不优化 ID 映射性能。
+
+DatasetSpec 的 ratings_columns / books_columns 使用复制后封装的只读映射，实例创建后不能直接增删或替换字段，调用方原字典修改也不影响实例。preparation_config 返回独立的普通 JSON 字典，可安全导出；修改导出副本不会改变配置、产物绑定或缓存标识。评分配置仍为冻结对象；既有配置的摘要和路径不变。
 
 prepared manifest 绑定数据集、数据批次、映射版本及适配配置摘要（包含 adapter_version）；模型绑定在此基础上再包含 model_version。模型版本变化不会搬迁准备数据；来源字段或量表变化会改变绑定。`require_artifact_binding` 是后续读数据 / 模型前必须调用的门禁，本阶段只实现校验接口，尚未提供通用 ALS 加载 / 训练入口。
 
@@ -89,11 +97,12 @@ cache_version 同时包含数据与模型绑定，不同数据集 / 批次 / 映
 ```bash
 docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
   --master spark://master:7077 --total-executor-cores 2 \
-  src/prepare_dataset.py --config /workspace/bookrec/<已审阅配置.json>
-# 同一映射体系扩充数据：另加 --previous-config /workspace/bookrec/<旧配置.json>
+  src/prepare_dataset.py --config /workspace/bookrec/<已审阅配置.json> --mapping-mode create
+# 同一映射体系扩充数据：改用 --mapping-mode extend，并提供
+# --previous-config /workspace/bookrec/<最新映射批次配置.json>
 ```
 
-新入口故意不提供 --overwrite 或自由 output-root；原入口的 --overwrite 不变。目标批次目录存在（包括部分失败目录）立即拒绝，读取原始数据之前检查。所有写入使用 errorifexists，manifest 最后写入；失败不删除或覆盖任何目录。没有跨路径事务或并发发布锁，重试应使用新的批次并核对映射继承，避免同时准备相同数据集 / 批次。
+新入口故意不提供 --overwrite 或自由 output-root；原入口的 --overwrite 不变。目标批次目录存在（包括部分失败目录）立即拒绝，读取原始数据之前检查。所有写入使用 errorifexists，manifest 最后写入；失败不删除或覆盖任何目录。没有跨路径事务或并发发布锁；**同一数据集 / mapping_version 必须串行导入，即使 data_version 不同**，避免历史检查与提交之间的竞争。部分失败目录或旧的分叉历史需要另行人工审计，不能直接跳过或删除；可能需要新的 mapping_version。发布清单与既有映射文件应由操作者保持完整，不把外部手动改写当作合法继承。
 
 本轮测试命令：
 
@@ -107,6 +116,8 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
 Spark 测试只使用人工 DataFrame / file:///tmp 新目录。验证统一 Schema、字段别名、0～10 显式变换、缺标签及作者、重复键、空 ID / 元数据、非法评分、字符串映射稳定与增量继承、映射冲突、发布清单、拒绝覆盖及原始 CSV 不变。配置测试验证路径、量表、数据 / 模型绑定与缓存命名空间隔离。
 
 2026-10-28 结果：配置 / 导入 13 项、人工 Spark 适配 8 项、原 WebUI / 缓存 22 项通过，共 43 项；git diff --check 通过。HDFS processed / models 递归清单前后一致，61 份历史审计 / 演示文件摘要未变，演示索引逐字节未变。13 份演示请求均命中预计算结果；在线 WebUI 保持原进程，loopback 和 NAT 地址健康检查均为 HTTP 200。本次未重新验证 Windows 浏览器，也未将人工测试当作真实第二数据集验收。
+
+随后定向修复的回归结果：配置 / 不可变性 / 继承门禁 22 项、人工 Spark 适配 9 项通过，共 31 项。新增回归在 file:///tmp 构造旧发布，验证同 mapping_version / 不同 data_version 时遗漏 previous-config、重新 create、选用过旧前序均在读取新 CSV / 写入之前拒绝；合法 extend 保留旧用户 / 图书 ID 和暂未出现的映射，新 ID 在旧最大值后追加，旧目录摘要不变。既有配置绑定及缓存标识与修复前固定值一致。此轮不重跑真实导入或训练，也不做 ID 映射性能优化。
 
 ## 等待选定第二个数据集
 

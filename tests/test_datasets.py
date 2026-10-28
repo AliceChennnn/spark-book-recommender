@@ -6,12 +6,15 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from dataclasses import FrozenInstanceError, replace
 from pathlib import Path
+from unittest.mock import Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from datasets import DatasetSpec, GOODBOOKS_ROOT, GOODBOOKS_VERSION, require_artifact_binding
-from prepare_dataset import load_spec
+from dataset_adapter import adapt_frames
+from prepare_dataset import load_spec, prepare, _check_mapping_history
 
 
 def fixture_config(**changes):
@@ -115,6 +118,129 @@ class DatasetConfigTest(unittest.TestCase):
         original = copy.deepcopy(spec.data_binding)
         config["ratings_columns"]["user_id"] = "different"
         self.assertEqual(spec.data_binding, original)
+
+    def test_instance_field_mappings_cannot_be_mutated(self):
+        spec = DatasetSpec.from_dict(fixture_config())
+        before = (spec.preparation_config, spec.data_binding, spec.model_binding, spec.cache_version)
+        for fields in (spec.ratings_columns, spec.books_columns):
+            with self.assertRaises(TypeError):
+                fields["book_id"] = "changed"
+            with self.assertRaises(TypeError):
+                del fields["book_id"]
+            self.assertFalse(hasattr(fields, "update"))
+            self.assertFalse(hasattr(fields, "clear"))
+        with self.assertRaises(FrozenInstanceError):
+            spec.ratings_columns = {}
+        self.assertEqual((spec.preparation_config, spec.data_binding, spec.model_binding, spec.cache_version), before)
+
+    def test_export_is_detached_and_binding_remains_backward_compatible(self):
+        spec = DatasetSpec.from_dict(fixture_config())
+        exported = spec.preparation_config
+        json.dumps(exported)
+        exported["ratings_columns"]["user_id"] = "changed"
+        exported["books_columns"]["authors"] = "changed"
+        exported["rating_scale"]["source_max"] = 100
+        self.assertEqual(spec.ratings_columns["user_id"], "reader")
+        self.assertIsNone(spec.books_columns["authors"])
+        self.assertEqual(spec.data_binding["preparation_sha256"],
+                         "619fddf5d6a9659e3788847096e3edad80b083012f24e36da3780d3e9d739844")
+        self.assertEqual(spec.cache_version,
+                         "dataset-fixture-a-ae71df13afb38ba9e9cec173ed9e4c29311b421e2181a069ca8f0613207a180a")
+        self.assertEqual(replace(spec, model_version="als2").data_binding, spec.data_binding)
+
+    def test_mapping_modes_fail_before_any_spark_access(self):
+        spec = DatasetSpec.from_dict(fixture_config(data_version="r2"))
+        for mode, previous in ((None, None), ("extend", None), ("create", spec)):
+            spark = Mock()
+            with self.subTest(mode=mode), self.assertRaises(ValueError):
+                prepare(spark, spec, previous, mapping_mode=mode)
+            self.assertEqual(spark.mock_calls, [])
+            with self.assertRaises(ValueError):
+                adapt_frames(None, None, spec, previous, mapping_mode=mode)
+
+    def test_cli_extend_without_previous_config_fails_before_loading_config_or_spark(self):
+        for args in (("--config", "/absent.json", "--mapping-mode", "extend"),
+                     ("--config", "/absent.json")):
+            script = Path(__file__).resolve().parents[1] / "src/prepare_dataset.py"
+            result = subprocess.run([sys.executable, str(script), *args],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn("Traceback", result.stderr)
+            self.assertIn("--previous-config" if args[-1] == "extend" else "--mapping-mode", result.stderr)
+
+    def test_create_rejects_mapping_version_used_by_another_data_version(self):
+        spec = DatasetSpec.from_dict(fixture_config(data_version="r2"))
+        spark = Mock()
+        fs = spark._jvm.org.apache.hadoop.fs.Path.return_value.getFileSystem.return_value
+        fs.globStatus.return_value = [Mock()]
+        with self.assertRaisesRegex(ValueError, "already exists"):
+            _check_mapping_history(spark, spec, None, "create")
+        spark.read.text.assert_not_called()
+        spark.read.option.assert_not_called()
+
+    def history_spark(self, records):
+        spark = Mock()
+        statuses = []
+        documents = {}
+        for spec, parent in records:
+            status = Mock()
+            status.isDirectory.return_value = True
+            status.getPath.return_value.toString.return_value = spec.prepared_root
+            status.getPath.return_value.getParent.return_value.getName.return_value = spec.data_version
+            statuses.append(status)
+            manifest = {"artifact_kind": "prepared", "binding": spec.data_binding,
+                        "mapping_parent": parent}
+            documents[f"{spec.prepared_root}/manifest"] = manifest
+        fs = spark._jvm.org.apache.hadoop.fs.Path.return_value.getFileSystem.return_value
+        fs.globStatus.return_value = statuses
+        def read(path):
+            return Mock(collect=Mock(return_value=[Mock(value=json.dumps(documents[path]))]))
+        spark.read.text.side_effect = read
+        return spark
+
+    def test_extend_requires_the_head_instead_of_lexical_data_version_order(self):
+        a = DatasetSpec.from_dict(fixture_config(data_version="r2"))
+        b = DatasetSpec.from_dict(fixture_config(data_version="r10"))
+        target = DatasetSpec.from_dict(fixture_config(data_version="next"))
+        spark = self.history_spark([(a, None), (b, a.data_binding)])
+        _check_mapping_history(spark, target, b, "extend")
+        with self.assertRaisesRegex(ValueError, "latest mapping release"):
+            _check_mapping_history(spark, target, a, "extend")
+
+    def test_independent_or_disconnected_histories_are_not_silently_merged(self):
+        a = DatasetSpec.from_dict(fixture_config())
+        b = DatasetSpec.from_dict(fixture_config(data_version="r2"))
+        c = DatasetSpec.from_dict(fixture_config(data_version="r3"))
+        target = DatasetSpec.from_dict(fixture_config(data_version="r4"))
+        for records in ([(a, None), (b, None)],
+                        [(a, None), (b, c.data_binding), (c, b.data_binding)],
+                        [(a, b.data_binding)]):
+            with self.subTest(records=len(records)), self.assertRaises(ValueError):
+                _check_mapping_history(self.history_spark(records), target, a, "extend")
+
+    def test_incomplete_release_and_filesystem_errors_fail_closed(self):
+        old = DatasetSpec.from_dict(fixture_config())
+        target = replace(old, data_version="r2")
+        spark = self.history_spark([(old, None)])
+        spark.read.text.side_effect = FileNotFoundError("partial release")
+        with self.assertRaisesRegex(ValueError, "Incomplete or unreadable"):
+            _check_mapping_history(spark, target, old, "extend")
+        spark.read.option.assert_not_called()
+        fs = spark._jvm.org.apache.hadoop.fs.Path.return_value.getFileSystem.return_value
+        fs.globStatus.side_effect = OSError("filesystem unavailable")
+        with self.assertRaisesRegex(OSError, "filesystem unavailable"):
+            _check_mapping_history(spark, target, None, "create")
+
+    def test_mapping_version_change_is_an_explicit_new_dictionary(self):
+        old = DatasetSpec.from_dict(fixture_config())
+        target = replace(old, data_version="r2", mapping_version="m2")
+        spark = Mock()
+        fs = spark._jvm.org.apache.hadoop.fs.Path.return_value.getFileSystem.return_value
+        fs.globStatus.return_value = None
+        _check_mapping_history(spark, target, None, "create")
+        spark._jvm.org.apache.hadoop.fs.Path.assert_called_with(f"{target.root}/releases/*/m2")
+        with self.assertRaisesRegex(ValueError, "same dataset and mapping version"):
+            _check_mapping_history(spark, target, old, "extend")
 
     def test_unsupported_topic_format_requires_a_real_adapter(self):
         with self.assertRaisesRegex(ValueError, "legacy adapter"):

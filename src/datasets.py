@@ -4,7 +4,9 @@ import hashlib
 import json
 import math
 import re
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
+from types import MappingProxyType
 
 
 GOODBOOKS_ROOT = "hdfs://master:9000/user/root/bookrec"
@@ -45,8 +47,8 @@ class DatasetSpec:
     data_version: str
     mapping_version: str
     model_version: str
-    ratings_columns: dict
-    books_columns: dict
+    ratings_columns: Mapping
+    books_columns: Mapping
     rating_scale: RatingScale
     topics: str
 
@@ -57,7 +59,7 @@ class DatasetSpec:
             raise ValueError("Goodbooks is reserved; use the unchanged legacy entry points")
         for mapping, keys in ((self.ratings_columns, {"user_id", "book_id", "rating"}),
                               (self.books_columns, {"book_id", "title", "authors"})):
-            if not isinstance(mapping, dict) or set(mapping) != keys:
+            if not isinstance(mapping, Mapping) or set(mapping) != keys:
                 raise ValueError(f"Declare exactly these canonical fields: {sorted(keys)}")
             fields = []
             for key, source in mapping.items():
@@ -72,9 +74,10 @@ class DatasetSpec:
             raise ValueError("rating_scale must explicitly describe the source and target scales")
         if self.topics != "none":
             raise ValueError("This stage supports topics=none; Goodreads tags keep their legacy adapter")
-        # Defensively copy caller-owned dictionaries before computing identities.
-        object.__setattr__(self, "ratings_columns", dict(self.ratings_columns))
-        object.__setattr__(self, "books_columns", dict(self.books_columns))
+        # Copy, then expose read-only mappings; neither callers nor instance users
+        # can change the configuration underneath its artifact/cache identities.
+        object.__setattr__(self, "ratings_columns", MappingProxyType(dict(self.ratings_columns)))
+        object.__setattr__(self, "books_columns", MappingProxyType(dict(self.books_columns)))
 
     @classmethod
     def from_dict(cls, value):
@@ -87,10 +90,12 @@ class DatasetSpec:
 
     @property
     def preparation_config(self):
-        value = asdict(self)
-        value.pop("model_version")
-        value["adapter_version"] = "csv-fields-v1"
-        return value
+        # Export detached JSON-compatible dictionaries without deepcopying proxies.
+        return {"dataset_id": self.dataset_id, "data_version": self.data_version,
+                "mapping_version": self.mapping_version,
+                "ratings_columns": dict(self.ratings_columns), "books_columns": dict(self.books_columns),
+                "rating_scale": asdict(self.rating_scale), "topics": self.topics,
+                "adapter_version": "csv-fields-v1"}
 
     @property
     def data_binding(self):
@@ -136,3 +141,13 @@ def require_artifact_binding(manifest, spec, kind="prepared"):
     expected = spec.data_binding if kind == "prepared" else spec.model_binding
     if manifest.get("artifact_kind") != kind or manifest.get("binding") != expected:
         raise ValueError("Dataset/data/mapping/model binding mismatch; refusing artifact reuse")
+
+
+def require_mapping_mode(mode, previous):
+    """An omitted predecessor must never silently select a new ID dictionary."""
+    if mode not in ("create", "extend"):
+        raise ValueError("Explicit mapping_mode / --mapping-mode create or extend is required")
+    if mode == "create" and previous is not None:
+        raise ValueError("create cannot inherit previous mappings; use extend")
+    if mode == "extend" and previous is None:
+        raise ValueError("extend requires --previous-config / persisted previous mappings")
