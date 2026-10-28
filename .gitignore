@@ -1,18 +1,42 @@
-# Python
+# Python and test tools
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local credentials
 .env
+.env.*
+!.env.example
+.aws/
 
-# Dataset
+# Raw data, model exports and generated results
 data/
-
-# Models and results
 models/
 outputs/
+*.parquet
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.whl
+*.deb
 
-# Logs
+# Logs, runtime caches and temporary files
 *.log
+*.pid
+*.tmp
+*.temp
+.cache/
+*.swp
+*.swo
+*~
 
 # IDE
 .idea/
+.vscode/
