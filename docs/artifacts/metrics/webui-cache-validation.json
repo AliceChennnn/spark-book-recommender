@@ -1,0 +1,100 @@
+{
+  "demo_profiles": {
+    "660": {
+      "rated_book_count": 132,
+      "source": "precomputed"
+    },
+    "1000": {
+      "rated_book_count": 107,
+      "source": "precomputed"
+    },
+    "2000": {
+      "rated_book_count": 148,
+      "source": "precomputed"
+    }
+  },
+  "demo_recommendations": {
+    "660:als": {
+      "count": 10,
+      "actual_algorithm": "als",
+      "source": "precomputed"
+    },
+    "660:popularity": {
+      "count": 10,
+      "actual_algorithm": "popularity",
+      "source": "precomputed"
+    },
+    "1000:als": {
+      "count": 10,
+      "actual_algorithm": "als",
+      "source": "precomputed"
+    },
+    "1000:popularity": {
+      "count": 10,
+      "actual_algorithm": "popularity",
+      "source": "precomputed"
+    },
+    "2000:als": {
+      "count": 10,
+      "actual_algorithm": "als",
+      "source": "precomputed"
+    },
+    "2000:popularity": {
+      "count": 10,
+      "actual_algorithm": "popularity",
+      "source": "precomputed"
+    },
+    "999999:als": {
+      "count": 10,
+      "actual_algorithm": "popularity",
+      "source": "precomputed"
+    },
+    "999999:popularity": {
+      "count": 10,
+      "actual_algorithm": "popularity",
+      "source": "precomputed"
+    }
+  },
+  "on_demand": [
+    {
+      "kind": "preferences",
+      "user_id": 662,
+      "mode": "",
+      "source": "runtime_cache",
+      "spark_jobs": 0,
+      "seconds": 0.001,
+      "repeat_additional_jobs": 0
+    },
+    {
+      "kind": "recommendations",
+      "user_id": 662,
+      "mode": "als",
+      "source": "runtime_cache",
+      "spark_jobs": 0,
+      "seconds": 0.001,
+      "repeat_additional_jobs": 0
+    },
+    {
+      "kind": "recommendations",
+      "user_id": 662,
+      "mode": "popularity",
+      "source": "runtime_cache",
+      "spark_jobs": 0,
+      "seconds": 0.001,
+      "repeat_additional_jobs": 0
+    },
+    {
+      "kind": "preferences",
+      "user_id": 999999,
+      "mode": "",
+      "source": "runtime_cache",
+      "spark_jobs": 0,
+      "seconds": 0.001,
+      "repeat_additional_jobs": 0
+    }
+  ],
+  "demo_subprocess_calls": 0,
+  "on_demand_seen_overlap": 0,
+  "host_imported_pyspark": false,
+  "windows_access": "Manual browser check; see docs/webui.md for this run's confirmation"
+}

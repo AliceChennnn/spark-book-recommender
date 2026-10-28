@@ -1,0 +1,112 @@
+{
+  "user_id": 2000,
+  "requested_algorithm": "popularity",
+  "actual_algorithm": "popularity",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 2000,
+      "book_id": 3,
+      "title": "Twilight (Twilight, #1)",
+      "authors": "Stephenie Meyer",
+      "score": 15368.0,
+      "rank": 1,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 23,
+      "title": "Harry Potter and the Chamber of Secrets (Harry Potter, #2)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 14185.0,
+      "rank": 2,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 7,
+      "title": "The Hobbit",
+      "authors": "J.R.R. Tolkien",
+      "score": 14025.0,
+      "rank": 3,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 25,
+      "title": "Harry Potter and the Deathly Hallows (Harry Potter, #7)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 13861.0,
+      "rank": 4,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 21,
+      "title": "Harry Potter and the Order of the Phoenix (Harry Potter, #5)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 13836.0,
+      "rank": 5,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 8,
+      "title": "The Catcher in the Rye",
+      "authors": "J.D. Salinger",
+      "score": 13177.0,
+      "rank": 6,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 14,
+      "title": "Animal Farm",
+      "authors": "George Orwell",
+      "score": 13044.0,
+      "rank": 7,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 28,
+      "title": "Lord of the Flies",
+      "authors": "William Golding",
+      "score": 12307.0,
+      "rank": 8,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 10,
+      "title": "Pride and Prejudice",
+      "authors": "Jane Austen",
+      "score": 12200.0,
+      "rank": 9,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 19,
+      "title": "The Fellowship of the Ring (The Lord of the Rings, #1)",
+      "authors": "J.R.R. Tolkien",
+      "score": 11345.0,
+      "rank": 10,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-28T12:39:20.422696+08:00",
+  "head": "eee13c575fff6f5b74de79e758b27a61f567fcb2",
+  "branch": "feature/user-preferences",
+  "file_counts": {
+    "tracked": 27,
+    "untracked": 64,
+    "ignored": 12395
+  },
+  "tracked_but_ignored": [],
+  "credential_pattern_hit_paths": [],
+  "proxy_assignment_hit_paths": [],
+  "debug_call_hit_paths": [],
+  "scan_scope": "tracked and untracked project text files; preserved upstream artifact whitespace; not an external credential audit",
+  "full_inventory": "outputs/release_audit_20261028/git-inventory.json",
+  "remote_refs_verified": false,
+  "staged_changes": []
+}

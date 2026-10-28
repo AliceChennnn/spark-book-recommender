@@ -1,0 +1,112 @@
+{
+  "user_id": 661,
+  "requested_algorithm": "popularity",
+  "actual_algorithm": "popularity",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 661,
+      "book_id": 2,
+      "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 19725.0,
+      "rank": 1,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 4,
+      "title": "To Kill a Mockingbird",
+      "authors": "Harper Lee",
+      "score": 17280.0,
+      "rank": 2,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 3,
+      "title": "Twilight (Twilight, #1)",
+      "authors": "Stephenie Meyer",
+      "score": 15368.0,
+      "rank": 3,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 5,
+      "title": "The Great Gatsby",
+      "authors": "F. Scott Fitzgerald",
+      "score": 14970.0,
+      "rank": 4,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 20,
+      "title": "Mockingjay (The Hunger Games, #3)",
+      "authors": "Suzanne Collins",
+      "score": 14503.0,
+      "rank": 5,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 18,
+      "title": "Harry Potter and the Prisoner of Azkaban (Harry Potter, #3)",
+      "authors": "J.K. Rowling, Mary GrandPré, Rufus Beck",
+      "score": 14332.0,
+      "rank": 6,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 23,
+      "title": "Harry Potter and the Chamber of Secrets (Harry Potter, #2)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 14185.0,
+      "rank": 7,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 24,
+      "title": "Harry Potter and the Goblet of Fire (Harry Potter, #4)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 14072.0,
+      "rank": 8,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 7,
+      "title": "The Hobbit",
+      "authors": "J.R.R. Tolkien",
+      "score": 14025.0,
+      "rank": 9,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    },
+    {
+      "user_id": 661,
+      "book_id": 25,
+      "title": "Harry Potter and the Deathly Hallows (Harry Potter, #7)",
+      "authors": "J.K. Rowling, Mary GrandPré",
+      "score": 13861.0,
+      "rank": 10,
+      "score_type": "training_rating_count",
+      "algorithm": "popularity"
+    }
+  ]
+}

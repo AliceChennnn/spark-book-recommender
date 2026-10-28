@@ -1,0 +1,6 @@
+========== 集群测试 ==========
+Master: spark://master:7077
+Spark SQL Sum: 500500
+Executor hosts: ['master', 'worker1']
+Total records: 1000
+========== 测试结束 ==========

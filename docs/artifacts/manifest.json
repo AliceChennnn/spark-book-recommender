@@ -1,0 +1,231 @@
+{
+  "snapshot_date": "2026-10-28",
+  "hash_algorithm": "sha256",
+  "files": [
+    {
+      "path": "DATA_LICENSE.txt",
+      "bytes": 187,
+      "sha256": "1a459ea0f6e7f28d4eba7df0ddace58e0874e53dad4f787e0d206fdbf602147d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2226,
+      "sha256": "b8b94115635361274e516e05312958e53f688f45e1e2d9d3e1191dc6a845d761"
+    },
+    {
+      "path": "data-checksums.json",
+      "bytes": 628,
+      "sha256": "1950de0ad3978c6b632c59b74351aca0dbc188a9d893f99444f40e525eeec0e4"
+    },
+    {
+      "path": "demo/preferences/user_1000.json",
+      "bytes": 14011,
+      "sha256": "5617b4929a1ab0c16f7db2397fe45ee98ce78caab63e951dc3cca9898c372f66"
+    },
+    {
+      "path": "demo/preferences/user_2000.json",
+      "bytes": 15895,
+      "sha256": "93bfeced58f468da62bc12a4a4ccd1c9fc47e617099d5187fc48d54088625ca8"
+    },
+    {
+      "path": "demo/preferences/user_660.json",
+      "bytes": 17116,
+      "sha256": "b1128d4d5cdc7db9d64c919503ef44074594ab276fff9b5bf3206aab58e8fe56"
+    },
+    {
+      "path": "demo/recommendations/user_1000_als.json",
+      "bytes": 2839,
+      "sha256": "cfd4fa9b5b2878a9631294f557562b3d7849e9ec16c1e89e83dea59520315291"
+    },
+    {
+      "path": "demo/recommendations/user_1000_popularity.json",
+      "bytes": 3028,
+      "sha256": "cdc1c1651a79ce80ec711f920865cafc0dca7fdbadc5f07e5d739d7462691354"
+    },
+    {
+      "path": "demo/recommendations/user_2000_als.json",
+      "bytes": 2915,
+      "sha256": "a7f8067dd6e3bcd3873517d0f30da4737df691afc84f66a477a7b3e0cea8187d"
+    },
+    {
+      "path": "demo/recommendations/user_2000_popularity.json",
+      "bytes": 2881,
+      "sha256": "72f075f2e386311956f155ef037fb16524d2b96a0e46c2765f82d3b1ee6f02c1"
+    },
+    {
+      "path": "demo/recommendations/user_660_als.json",
+      "bytes": 2939,
+      "sha256": "e2f8f37748c977341e9b845dab342ac0ea8e03ec09d6430df067fb7477fab804"
+    },
+    {
+      "path": "demo/recommendations/user_660_popularity.json",
+      "bytes": 3010,
+      "sha256": "d070112958492eabe6b3acb26b5fd7dfd9663d11e3e88365243441303bc686ec"
+    },
+    {
+      "path": "demo/recommendations/user_661_als.json",
+      "bytes": 2936,
+      "sha256": "547585d8ad2a2099dc5a145d8146881a0096e95b81f2c7eba8fe2d25544de040"
+    },
+    {
+      "path": "demo/recommendations/user_661_popularity.json",
+      "bytes": 2970,
+      "sha256": "7fde329398a96b3bdb13199c1bfc4a3ad1751f8ffccaf86ad4a76cf760c32d12"
+    },
+    {
+      "path": "demo/recommendations/user_999999_als.json",
+      "bytes": 3081,
+      "sha256": "bde51ac9b46ce01342475b83182d5d0878e789b0a50226f72e092af961b1b9f0"
+    },
+    {
+      "path": "demo/recommendations/user_999999_popularity.json",
+      "bytes": 3001,
+      "sha256": "5f65b699f48642afcb4394650bcd59a53950fe106539c06fedcc45665067c0f6"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 1133,
+      "sha256": "aad611ac01e1e4fef5c788edfa3402fb643741bf61a1a6516f232a492e35d7ec"
+    },
+    {
+      "path": "figures/popular_books.png",
+      "bytes": 95542,
+      "sha256": "6a36ff1b6f13d1690bb0533f507e3a13a0611063ec71989eaa3c6d748af6a663"
+    },
+    {
+      "path": "figures/rating_distribution.png",
+      "bytes": 37596,
+      "sha256": "147f92078879b91d7b3625ea6eefb8be846a27dcfc1092ffe545a7b122539539"
+    },
+    {
+      "path": "figures/rmse_comparison.png",
+      "bytes": 42534,
+      "sha256": "cfd1c859a2680029ded8112bb79e92d4e3523b7213c290d237e71cd6c1bdec12"
+    },
+    {
+      "path": "figures/topk_comparison.png",
+      "bytes": 63536,
+      "sha256": "082ccea962c3e588d086cfb918f9e82b20ba7d17e09ab3c691f907b8a04cc809"
+    },
+    {
+      "path": "figures/user_activity.png",
+      "bytes": 42622,
+      "sha256": "d054af9fde524972cee6ff07d90fa6ed2625f2da6c444cf9162b85a60842767d"
+    },
+    {
+      "path": "git-audit.json",
+      "bytes": 631,
+      "sha256": "801a215cafb5fb1779bb4aef2d741f06abeb7ac75afba46a639ff6062d57d242"
+    },
+    {
+      "path": "metrics/cluster-check.txt",
+      "bytes": 178,
+      "sha256": "d3ba901b63555bee7e177227c4f42d187d92aa7d09eeba249fff4edd0846c533"
+    },
+    {
+      "path": "metrics/data-inspection.txt",
+      "bytes": 3317,
+      "sha256": "bfd7596e04f61431f61c37edf06c0d9a7b0e5d2fbd9d4a5d083880d28c4c8b00"
+    },
+    {
+      "path": "metrics/data-quality.json",
+      "bytes": 372,
+      "sha256": "82182779ae0759bf70ca16d8b4e662d678077e178bc9042da981c78062f7b819"
+    },
+    {
+      "path": "metrics/delivery-restore-test.json",
+      "bytes": 435,
+      "sha256": "f94acb32a13548047cb19c097557c1f1f1e03739854f79dc4947cdb626910e43"
+    },
+    {
+      "path": "metrics/frozen-model-rmse.json",
+      "bytes": 712,
+      "sha256": "e9eb979baec60d1932048d9b170f2cee2d1b9306892b51a50eb2b9c72b3d696f"
+    },
+    {
+      "path": "metrics/model-metadata.json",
+      "bytes": 452,
+      "sha256": "7a25a62f7cdb421a5fdca82341f197e4223b112999fad27fef2d7f6a01c3a517"
+    },
+    {
+      "path": "metrics/preferences-comparison.json",
+      "bytes": 953,
+      "sha256": "5b2d5190fcac6f5d5280c7d8a2a64a52fa4365e609bfae6f809e1f2cbbcd8bd7"
+    },
+    {
+      "path": "metrics/recommendations-acceptance.json",
+      "bytes": 10629,
+      "sha256": "3a3621e7859f3cf0121b23741fc440a30c74d403fd774ad297fa6d6311ed00fb"
+    },
+    {
+      "path": "metrics/tag-audit.json",
+      "bytes": 2930,
+      "sha256": "abea3e6f6e2e0e50d4b3dc4baf58244e3c8c48b925208cc18e331dff3e70858f"
+    },
+    {
+      "path": "metrics/tests-summary.json",
+      "bytes": 1143,
+      "sha256": "e510e61c4363a44d009b6669da997df602b4365bad070afdab461180d1afd3d3"
+    },
+    {
+      "path": "metrics/topk.json",
+      "bytes": 467,
+      "sha256": "3936ec8760da0abd3cec50d9a29a01fb968914bf455907e969a7687805e76037"
+    },
+    {
+      "path": "metrics/topk.stdout.txt",
+      "bytes": 587,
+      "sha256": "2769a65c4f43006f7eaf18a9cbe808813b22f3e39c256515c088ba4301ab48ef"
+    },
+    {
+      "path": "metrics/webui-cache-validation.json",
+      "bytes": 2240,
+      "sha256": "9d7f7ff8a1ef89f6ee42ffd27b59c57d989cfcca553cb5d7555a1b43b02752ea"
+    },
+    {
+      "path": "metrics/webui-validation.json",
+      "bytes": 2228,
+      "sha256": "da11d22ae7fd508868be9e1f8c8a09f77d14f79bc043e53a3c627bd48f68ff95"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 4555,
+      "sha256": "16a29f4400a6e11953ba4e83081804b4efe0564a5d19fad0c7efc16c9a28e6e1"
+    },
+    {
+      "path": "screenshots/fallback.png",
+      "bytes": 108483,
+      "sha256": "31a313b7db5c88d84c8b10aeed55a8a805e820b25d5daa546494789d3548cca1"
+    },
+    {
+      "path": "screenshots/overview.png",
+      "bytes": 84454,
+      "sha256": "c865cb9778ea61772953cf6f190812bd82657d1f3b305b2573ff4389dfbfc02b"
+    },
+    {
+      "path": "screenshots/preferences.png",
+      "bytes": 95379,
+      "sha256": "02cdae235e6aa2e4ffc489ad52732984d2be6a5c50f351452e4a10a8b2aba463"
+    },
+    {
+      "path": "statistics/high_rated_books.csv",
+      "bytes": 675,
+      "sha256": "a687ea6804c08ab10fd50ba859cd927c86813141fda2a88ed85c35031baf54ad"
+    },
+    {
+      "path": "statistics/popular_books.csv",
+      "bytes": 779,
+      "sha256": "d4b3d6d9c4cc3bb9fcc140b4f0dffbec324d301e3f86dd2c176aa1b376137359"
+    },
+    {
+      "path": "statistics/rating_distribution.csv",
+      "bytes": 68,
+      "sha256": "ecdb43a35637fc4b67bd90df0f3087a15f97805c14fb85e282046dda5767be7c"
+    },
+    {
+      "path": "statistics/user_activity.csv",
+      "bytes": 67,
+      "sha256": "0ba8c88ada73b442f2ec9a3524ca83e3ab4d8e9d8ffd0df432cc963bcac5fe60"
+    }
+  ]
+}

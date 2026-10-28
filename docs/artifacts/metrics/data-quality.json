@@ -1,0 +1,17 @@
+{
+  "measured_on": "2026-10-28",
+  "ratings": 5976479,
+  "users": 53424,
+  "rated_books": 10000,
+  "min_rating": 1,
+  "max_rating": 5,
+  "books": 10000,
+  "null_user_id": 0,
+  "null_book_id": 0,
+  "null_rating": 0,
+  "invalid_rating": 0,
+  "duplicate_pairs": 0,
+  "extra_records": 0,
+  "unmatched_book_ids": 0,
+  "source": "src/inspect_data.py; see data-inspection.txt"
+}

@@ -1,0 +1,112 @@
+{
+  "user_id": 660,
+  "requested_algorithm": "als",
+  "actual_algorithm": "als",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 660,
+      "book_id": 3628,
+      "title": "The Complete Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.858584880828857,
+      "rank": 1,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 3491,
+      "title": "Just Mercy: A Story of Justice and Redemption",
+      "authors": "Bryan Stevenson",
+      "score": 4.831053733825684,
+      "rank": 2,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 6920,
+      "title": "The Indispensable Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.825192928314209,
+      "rank": 3,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 6590,
+      "title": "The Authoritative Calvin and Hobbes: A Calvin and Hobbes Treasury",
+      "authors": "Bill Watterson",
+      "score": 4.822061538696289,
+      "rank": 4,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 9569,
+      "title": "The Hate U Give",
+      "authors": "Angie Thomas",
+      "score": 4.7970051765441895,
+      "rank": 5,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 9842,
+      "title": "Humans of New York: Stories",
+      "authors": "Brandon Stanton",
+      "score": 4.784660816192627,
+      "rank": 6,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 5207,
+      "title": "The Days Are Just Packed: A Calvin and Hobbes Collection",
+      "authors": "Bill Watterson",
+      "score": 4.768163204193115,
+      "rank": 7,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 422,
+      "title": "Harry Potter Boxset (Harry Potter, #1-7)",
+      "authors": "J.K. Rowling",
+      "score": 4.767463684082031,
+      "rank": 8,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 3753,
+      "title": "Harry Potter Collection (Harry Potter, #1-6)",
+      "authors": "J.K. Rowling",
+      "score": 4.765818119049072,
+      "rank": 9,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 660,
+      "book_id": 9566,
+      "title": "Attack of the Deranged Mutant Killer Monster Snow Goons",
+      "authors": "Bill Watterson",
+      "score": 4.752645492553711,
+      "rank": 10,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    }
+  ]
+}

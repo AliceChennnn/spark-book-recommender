@@ -1,0 +1,37 @@
+{
+  "basis": "All topic_score_shares dimensions; missing dimensions filled with zero. Descriptive differences do not establish recommendation effectiveness.",
+  "raw_csv_profile_and_author_checks_passed": [
+    660,
+    1000,
+    2000
+  ],
+  "pairs": [
+    {
+      "users": [
+        660,
+        1000
+      ],
+      "cosine_similarity_all_topics": 0.7851124309267182,
+      "js_distance_base2": 0.4499734764362684,
+      "cosine_similarity_without_fiction": 0.5339962496206321
+    },
+    {
+      "users": [
+        660,
+        2000
+      ],
+      "cosine_similarity_all_topics": 0.8890986232028156,
+      "js_distance_base2": 0.33607503860303,
+      "cosine_similarity_without_fiction": 0.7765770532043605
+    },
+    {
+      "users": [
+        1000,
+        2000
+      ],
+      "cosine_similarity_all_topics": 0.8503658301659396,
+      "js_distance_base2": 0.39059206813799313,
+      "cosine_similarity_without_fiction": 0.6175727707127221
+    }
+  ]
+}

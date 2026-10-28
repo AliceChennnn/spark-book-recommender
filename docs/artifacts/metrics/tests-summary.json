@@ -1,0 +1,34 @@
+{
+  "measured_on": "2026-10-28",
+  "total_tests": 41,
+  "groups": [
+    {
+      "source_log": "outputs/release_audit_20261028/test_prepare_tags.log",
+      "tests": 5,
+      "seconds": 35.883,
+      "passed": true,
+      "command": "docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --master 'local[2]' tests/test_prepare_tags.py"
+    },
+    {
+      "source_log": "outputs/release_audit_20261028/preferences-tests.log",
+      "tests": 11,
+      "seconds": 0.003,
+      "passed": true,
+      "command": ".venv/bin/python -m unittest discover -s tests -p test_preferences.py -v"
+    },
+    {
+      "source_log": "outputs/release_audit_20261028/test_recommenders.log",
+      "tests": 11,
+      "seconds": 56.324,
+      "passed": true,
+      "command": "docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --master 'local[2]' tests/test_recommenders.py"
+    },
+    {
+      "source_log": "outputs/release_audit_20261028/web-tests.log",
+      "tests": 14,
+      "seconds": 3.834,
+      "passed": true,
+      "command": ".venv/bin/python -m unittest discover -s tests -p 'test_web*.py' -v"
+    }
+  ]
+}

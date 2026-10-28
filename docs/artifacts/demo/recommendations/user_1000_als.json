@@ -1,0 +1,112 @@
+{
+  "user_id": 1000,
+  "requested_algorithm": "als",
+  "actual_algorithm": "als",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 1000,
+      "book_id": 3628,
+      "title": "The Complete Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.028995037078857,
+      "rank": 1,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 9531,
+      "title": "Crush",
+      "authors": "Richard Siken",
+      "score": 4.026909828186035,
+      "rank": 2,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 9842,
+      "title": "Humans of New York: Stories",
+      "authors": "Brandon Stanton",
+      "score": 3.9663305282592773,
+      "rank": 3,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 8259,
+      "title": "Graffiti World: Street Art from Five Continents",
+      "authors": "Nicholas Ganz, Tristan Manco",
+      "score": 3.96606183052063,
+      "rank": 4,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 8946,
+      "title": "The Divan",
+      "authors": "Hafez",
+      "score": 3.962400436401367,
+      "rank": 5,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 3491,
+      "title": "Just Mercy: A Story of Justice and Redemption",
+      "authors": "Bryan Stevenson",
+      "score": 3.962090492248535,
+      "rank": 6,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 9537,
+      "title": "Plenty",
+      "authors": "Yotam Ottolenghi",
+      "score": 3.9619812965393066,
+      "rank": 7,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 6862,
+      "title": "March: Book One (March, #1)",
+      "authors": "John             Lewis, Andrew Aydin, Nate Powell",
+      "score": 3.9603419303894043,
+      "rank": 8,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 5881,
+      "title": "A Single Man",
+      "authors": "Christopher Isherwood",
+      "score": 3.9442687034606934,
+      "rank": 9,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 1000,
+      "book_id": 6920,
+      "title": "The Indispensable Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 3.9363346099853516,
+      "rank": 10,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    }
+  ]
+}

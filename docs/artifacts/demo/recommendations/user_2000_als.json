@@ -1,0 +1,112 @@
+{
+  "user_id": 2000,
+  "requested_algorithm": "als",
+  "actual_algorithm": "als",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 2000,
+      "book_id": 3753,
+      "title": "Harry Potter Collection (Harry Potter, #1-6)",
+      "authors": "J.K. Rowling",
+      "score": 4.489499092102051,
+      "rank": 1,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 422,
+      "title": "Harry Potter Boxset (Harry Potter, #1-7)",
+      "authors": "J.K. Rowling",
+      "score": 4.489447593688965,
+      "rank": 2,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 9569,
+      "title": "The Hate U Give",
+      "authors": "Angie Thomas",
+      "score": 4.467373371124268,
+      "rank": 3,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 3491,
+      "title": "Just Mercy: A Story of Justice and Redemption",
+      "authors": "Bryan Stevenson",
+      "score": 4.467197418212891,
+      "rank": 4,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 6920,
+      "title": "The Indispensable Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.426560878753662,
+      "rank": 5,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 8013,
+      "title": "The Book with No Pictures",
+      "authors": "B.J. Novak",
+      "score": 4.425174713134766,
+      "rank": 6,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 6590,
+      "title": "The Authoritative Calvin and Hobbes: A Calvin and Hobbes Treasury",
+      "authors": "Bill Watterson",
+      "score": 4.422837734222412,
+      "rank": 7,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 9842,
+      "title": "Humans of New York: Stories",
+      "authors": "Brandon Stanton",
+      "score": 4.412600040435791,
+      "rank": 8,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 3628,
+      "title": "The Complete Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.406325817108154,
+      "rank": 9,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 2000,
+      "book_id": 5207,
+      "title": "The Days Are Just Packed: A Calvin and Hobbes Collection",
+      "authors": "Bill Watterson",
+      "score": 4.405913829803467,
+      "rank": 10,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    }
+  ]
+}

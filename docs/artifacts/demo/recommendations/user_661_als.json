@@ -1,0 +1,112 @@
+{
+  "user_id": 661,
+  "requested_algorithm": "als",
+  "actual_algorithm": "als",
+  "fallback_reason": null,
+  "status": "ok",
+  "top_k": 10,
+  "returned_count": 10,
+  "messages": [],
+  "recommendations": [
+    {
+      "user_id": 661,
+      "book_id": 3628,
+      "title": "The Complete Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 5.013200759887695,
+      "rank": 1,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 8926,
+      "title": "Humans of New York",
+      "authors": "Brandon Stanton",
+      "score": 4.988034248352051,
+      "rank": 2,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 3885,
+      "title": "Born a Crime: Stories From a South African Childhood",
+      "authors": "Trevor Noah",
+      "score": 4.976361274719238,
+      "rank": 3,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 9531,
+      "title": "Crush",
+      "authors": "Richard Siken",
+      "score": 4.974260330200195,
+      "rank": 4,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 5344,
+      "title": "A Game of Thrones: Comic Book, Issue 1",
+      "authors": "Daniel Abraham, George R.R. Martin, Tommy Patterson",
+      "score": 4.966320991516113,
+      "rank": 5,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 3491,
+      "title": "Just Mercy: A Story of Justice and Redemption",
+      "authors": "Bryan Stevenson",
+      "score": 4.926940441131592,
+      "rank": 6,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 6590,
+      "title": "The Authoritative Calvin and Hobbes: A Calvin and Hobbes Treasury",
+      "authors": "Bill Watterson",
+      "score": 4.924421310424805,
+      "rank": 7,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 6920,
+      "title": "The Indispensable Calvin and Hobbes",
+      "authors": "Bill Watterson",
+      "score": 4.920295715332031,
+      "rank": 8,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 3753,
+      "title": "Harry Potter Collection (Harry Potter, #1-6)",
+      "authors": "J.K. Rowling",
+      "score": 4.909523010253906,
+      "rank": 9,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    },
+    {
+      "user_id": 661,
+      "book_id": 2767,
+      "title": "Saga, Vol. 3 (Saga, #3)",
+      "authors": "Brian K. Vaughan, Fiona Staples",
+      "score": 4.908300399780273,
+      "rank": 10,
+      "score_type": "als_predicted_rating",
+      "algorithm": "als"
+    }
+  ]
+}

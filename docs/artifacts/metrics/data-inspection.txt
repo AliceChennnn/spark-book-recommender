@@ -1,0 +1,96 @@
+
+===== Ratings Schema =====
+root
+ |-- user_id: integer (nullable = true)
+ |-- book_id: integer (nullable = true)
+ |-- rating: integer (nullable = true)
+
+
+===== Books Schema =====
+root
+ |-- book_id: string (nullable = true)
+ |-- goodreads_book_id: string (nullable = true)
+ |-- best_book_id: string (nullable = true)
+ |-- work_id: string (nullable = true)
+ |-- books_count: string (nullable = true)
+ |-- isbn: string (nullable = true)
+ |-- isbn13: string (nullable = true)
+ |-- authors: string (nullable = true)
+ |-- original_publication_year: string (nullable = true)
+ |-- original_title: string (nullable = true)
+ |-- title: string (nullable = true)
+ |-- language_code: string (nullable = true)
+ |-- average_rating: string (nullable = true)
+ |-- ratings_count: string (nullable = true)
+ |-- work_ratings_count: string (nullable = true)
+ |-- work_text_reviews_count: string (nullable = true)
+ |-- ratings_1: string (nullable = true)
+ |-- ratings_2: string (nullable = true)
+ |-- ratings_3: string (nullable = true)
+ |-- ratings_4: string (nullable = true)
+ |-- ratings_5: string (nullable = true)
+ |-- image_url: string (nullable = true)
+ |-- small_image_url: string (nullable = true)
+
+
+===== Ratings Statistics =====
++-------------+-----------+-----------+----------+----------+
+|total_ratings|total_users|rated_books|min_rating|max_rating|
++-------------+-----------+-----------+----------+----------+
+|5976479      |53424      |10000      |1         |5         |
++-------------+-----------+-----------+----------+----------+
+
+
+===== Books Count =====
+Total books: 10000
+
+===== Rating Distribution =====
++------+-------+
+|rating|  count|
++------+-------+
+|     1| 124195|
+|     2| 359257|
+|     3|1370916|
+|     4|2139018|
+|     5|1983093|
++------+-------+
+
+
+===== Sample Books =====
++-------+--------------------------------------------------------+---------------------------+
+|book_id|                                                   title|                    authors|
++-------+--------------------------------------------------------+---------------------------+
+|      1|                 The Hunger Games (The Hunger Games, #1)|            Suzanne Collins|
+|      2|Harry Potter and the Sorcerer's Stone (Harry Potter, #1)|J.K. Rowling, Mary GrandPré|
+|      3|                                 Twilight (Twilight, #1)|            Stephenie Meyer|
+|      4|                                   To Kill a Mockingbird|                 Harper Lee|
+|      5|                                        The Great Gatsby|        F. Scott Fitzgerald|
++-------+--------------------------------------------------------+---------------------------+
+only showing top 5 rows
+
+
+===== Data Quality =====
++------------+------------+-----------+--------------+
+|null_user_id|null_book_id|null_rating|invalid_rating|
++------------+------------+-----------+--------------+
+|           0|           0|          0|             0|
++------------+------------+-----------+--------------+
+
+
+===== Duplicate Ratings =====
++---------------+-------------+
+|duplicate_pairs|extra_records|
++---------------+-------------+
+|              0|            0|
++---------------+-------------+
+
+
+===== Missing Book References =====
+Unmatched book IDs: 0
+
+===== Duplicate Book IDs =====
++-------+-----+
+|book_id|count|
++-------+-----+
++-------+-----+
+

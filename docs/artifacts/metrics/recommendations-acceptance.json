@@ -1,0 +1,371 @@
+{
+  "split_counts": {
+    "ratings": 5976479,
+    "train": 5408526,
+    "heldout": 567953
+  },
+  "users": [
+    {
+      "user_id": 660,
+      "seen_books": 132,
+      "heldout_seen_books": 0,
+      "already_rated_overlap": 0,
+      "top10_overlap": 0,
+      "als_actual_algorithm": "als",
+      "als_top3": [
+        {
+          "user_id": 660,
+          "book_id": 3628,
+          "title": "The Complete Calvin and Hobbes",
+          "authors": "Bill Watterson",
+          "score": 4.858584880828857,
+          "rank": 1,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 660,
+          "book_id": 3491,
+          "title": "Just Mercy: A Story of Justice and Redemption",
+          "authors": "Bryan Stevenson",
+          "score": 4.831053733825684,
+          "rank": 2,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 660,
+          "book_id": 6920,
+          "title": "The Indispensable Calvin and Hobbes",
+          "authors": "Bill Watterson",
+          "score": 4.825192928314209,
+          "rank": 3,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        }
+      ],
+      "popularity_top3": [
+        {
+          "user_id": 660,
+          "book_id": 2,
+          "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 19725.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 660,
+          "book_id": 4,
+          "title": "To Kill a Mockingbird",
+          "authors": "Harper Lee",
+          "score": 17280.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 660,
+          "book_id": 3,
+          "title": "Twilight (Twilight, #1)",
+          "authors": "Stephenie Meyer",
+          "score": 15368.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ]
+    },
+    {
+      "user_id": 1000,
+      "seen_books": 107,
+      "heldout_seen_books": 0,
+      "already_rated_overlap": 0,
+      "top10_overlap": 0,
+      "als_actual_algorithm": "als",
+      "als_top3": [
+        {
+          "user_id": 1000,
+          "book_id": 3628,
+          "title": "The Complete Calvin and Hobbes",
+          "authors": "Bill Watterson",
+          "score": 4.028995037078857,
+          "rank": 1,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 1000,
+          "book_id": 9531,
+          "title": "Crush",
+          "authors": "Richard Siken",
+          "score": 4.026909828186035,
+          "rank": 2,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 1000,
+          "book_id": 9842,
+          "title": "Humans of New York: Stories",
+          "authors": "Brandon Stanton",
+          "score": 3.9663305282592773,
+          "rank": 3,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        }
+      ],
+      "popularity_top3": [
+        {
+          "user_id": 1000,
+          "book_id": 1,
+          "title": "The Hunger Games (The Hunger Games, #1)",
+          "authors": "Suzanne Collins",
+          "score": 20691.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 1000,
+          "book_id": 2,
+          "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 19725.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 1000,
+          "book_id": 4,
+          "title": "To Kill a Mockingbird",
+          "authors": "Harper Lee",
+          "score": 17280.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ]
+    },
+    {
+      "user_id": 2000,
+      "seen_books": 148,
+      "heldout_seen_books": 0,
+      "already_rated_overlap": 0,
+      "top10_overlap": 0,
+      "als_actual_algorithm": "als",
+      "als_top3": [
+        {
+          "user_id": 2000,
+          "book_id": 3753,
+          "title": "Harry Potter Collection (Harry Potter, #1-6)",
+          "authors": "J.K. Rowling",
+          "score": 4.489499092102051,
+          "rank": 1,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 2000,
+          "book_id": 422,
+          "title": "Harry Potter Boxset (Harry Potter, #1-7)",
+          "authors": "J.K. Rowling",
+          "score": 4.489447593688965,
+          "rank": 2,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 2000,
+          "book_id": 9569,
+          "title": "The Hate U Give",
+          "authors": "Angie Thomas",
+          "score": 4.467373371124268,
+          "rank": 3,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        }
+      ],
+      "popularity_top3": [
+        {
+          "user_id": 2000,
+          "book_id": 3,
+          "title": "Twilight (Twilight, #1)",
+          "authors": "Stephenie Meyer",
+          "score": 15368.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 2000,
+          "book_id": 23,
+          "title": "Harry Potter and the Chamber of Secrets (Harry Potter, #2)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 14185.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 2000,
+          "book_id": 7,
+          "title": "The Hobbit",
+          "authors": "J.R.R. Tolkien",
+          "score": 14025.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ]
+    },
+    {
+      "user_id": 999999,
+      "seen_books": 0,
+      "heldout_seen_books": 0,
+      "already_rated_overlap": 0,
+      "top10_overlap": 10,
+      "als_actual_algorithm": "popularity",
+      "als_top3": [
+        {
+          "user_id": 999999,
+          "book_id": 1,
+          "title": "The Hunger Games (The Hunger Games, #1)",
+          "authors": "Suzanne Collins",
+          "score": 20691.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 999999,
+          "book_id": 2,
+          "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 19725.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 999999,
+          "book_id": 4,
+          "title": "To Kill a Mockingbird",
+          "authors": "Harper Lee",
+          "score": 17280.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ],
+      "popularity_top3": [
+        {
+          "user_id": 999999,
+          "book_id": 1,
+          "title": "The Hunger Games (The Hunger Games, #1)",
+          "authors": "Suzanne Collins",
+          "score": 20691.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 999999,
+          "book_id": 2,
+          "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 19725.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 999999,
+          "book_id": 4,
+          "title": "To Kill a Mockingbird",
+          "authors": "Harper Lee",
+          "score": 17280.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ]
+    },
+    {
+      "user_id": 661,
+      "seen_books": 106,
+      "heldout_seen_books": 10,
+      "already_rated_overlap": 0,
+      "top10_overlap": 0,
+      "als_actual_algorithm": "als",
+      "als_top3": [
+        {
+          "user_id": 661,
+          "book_id": 3628,
+          "title": "The Complete Calvin and Hobbes",
+          "authors": "Bill Watterson",
+          "score": 5.013200759887695,
+          "rank": 1,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 661,
+          "book_id": 8926,
+          "title": "Humans of New York",
+          "authors": "Brandon Stanton",
+          "score": 4.988034248352051,
+          "rank": 2,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        },
+        {
+          "user_id": 661,
+          "book_id": 3885,
+          "title": "Born a Crime: Stories From a South African Childhood",
+          "authors": "Trevor Noah",
+          "score": 4.976361274719238,
+          "rank": 3,
+          "score_type": "als_predicted_rating",
+          "algorithm": "als"
+        }
+      ],
+      "popularity_top3": [
+        {
+          "user_id": 661,
+          "book_id": 2,
+          "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, #1)",
+          "authors": "J.K. Rowling, Mary GrandPré",
+          "score": 19725.0,
+          "rank": 1,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 661,
+          "book_id": 4,
+          "title": "To Kill a Mockingbird",
+          "authors": "Harper Lee",
+          "score": 17280.0,
+          "rank": 2,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        },
+        {
+          "user_id": 661,
+          "book_id": 3,
+          "title": "Twilight (Twilight, #1)",
+          "authors": "Stephenie Meyer",
+          "score": 15368.0,
+          "rank": 3,
+          "score_type": "training_rating_count",
+          "algorithm": "popularity"
+        }
+      ]
+    }
+  ],
+  "popularity_count_mismatches": 0,
+  "legacy_als_order_and_scores_match": true
+}

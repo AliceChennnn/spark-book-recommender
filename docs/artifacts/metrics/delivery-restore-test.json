@@ -1,0 +1,16 @@
+{
+  "checked_on": "2026-10-28",
+  "temporary_isolated_directory": true,
+  "snapshots_registered": 13,
+  "profiles_checked": 3,
+  "recommendations_checked": 10,
+  "spark_jobs": 0,
+  "overview_metrics": {
+    "users": 53424,
+    "books": 10000,
+    "ratings": 5976479
+  },
+  "figures": 3,
+  "passed": true,
+  "scope": "Restored curated local assets plus a copy of existing books.csv and fingerprint sources; not VM/HDFS/model restore"
+}

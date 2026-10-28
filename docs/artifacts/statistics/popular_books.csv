@@ -1,0 +1,11 @@
+book_id,title,authors,rating_count,avg_rating
+1,"The Hunger Games (The Hunger Games, #1)",Suzanne Collins,22806,4.28
+2,"Harry Potter and the Sorcerer's Stone (Harry Potter, #1)","J.K. Rowling, Mary GrandPré",21850,4.351
+4,To Kill a Mockingbird,Harper Lee,19088,4.329
+3,"Twilight (Twilight, #1)",Stephenie Meyer,16931,3.214
+5,The Great Gatsby,F. Scott Fitzgerald,16604,3.772
+17,"Catching Fire (The Hunger Games, #2)",Suzanne Collins,16549,4.133
+20,"Mockingjay (The Hunger Games, #3)",Suzanne Collins,15953,3.853
+18,"Harry Potter and the Prisoner of Azkaban (Harry Potter, #3)","J.K. Rowling, Mary GrandPré, Rufus Beck",15855,4.419
+23,"Harry Potter and the Chamber of Secrets (Harry Potter, #2)","J.K. Rowling, Mary GrandPré",15657,4.229
+7,The Hobbit,J.R.R. Tolkien,15558,4.148

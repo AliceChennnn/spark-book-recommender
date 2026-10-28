@@ -1,0 +1,142 @@
+{
+  "snapshot_date": "2026-10-28",
+  "source_commit": "eee13c5",
+  "entries": [
+    {
+      "source": "outputs/user_preferences_v1/user_660.json",
+      "artifact": "demo/preferences/user_660.json"
+    },
+    {
+      "source": "outputs/user_preferences_v1/user_1000.json",
+      "artifact": "demo/preferences/user_1000.json"
+    },
+    {
+      "source": "outputs/user_preferences_v1/user_2000.json",
+      "artifact": "demo/preferences/user_2000.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_660_als.json",
+      "artifact": "demo/recommendations/user_660_als.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_660_popularity.json",
+      "artifact": "demo/recommendations/user_660_popularity.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_1000_als.json",
+      "artifact": "demo/recommendations/user_1000_als.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_1000_popularity.json",
+      "artifact": "demo/recommendations/user_1000_popularity.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_2000_als.json",
+      "artifact": "demo/recommendations/user_2000_als.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_2000_popularity.json",
+      "artifact": "demo/recommendations/user_2000_popularity.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_661_als.json",
+      "artifact": "demo/recommendations/user_661_als.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_661_popularity.json",
+      "artifact": "demo/recommendations/user_661_popularity.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_999999_als.json",
+      "artifact": "demo/recommendations/user_999999_als.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/user_999999_popularity.json",
+      "artifact": "demo/recommendations/user_999999_popularity.json"
+    },
+    {
+      "source": "outputs/analysis/high_rated_books.csv",
+      "artifact": "statistics/high_rated_books.csv"
+    },
+    {
+      "source": "outputs/analysis/popular_books.csv",
+      "artifact": "statistics/popular_books.csv"
+    },
+    {
+      "source": "outputs/analysis/rating_distribution.csv",
+      "artifact": "statistics/rating_distribution.csv"
+    },
+    {
+      "source": "outputs/analysis/user_activity.csv",
+      "artifact": "statistics/user_activity.csv"
+    },
+    {
+      "source": "outputs/figures/popular_books.png",
+      "artifact": "figures/popular_books.png"
+    },
+    {
+      "source": "outputs/figures/rating_distribution.png",
+      "artifact": "figures/rating_distribution.png"
+    },
+    {
+      "source": "outputs/figures/user_activity.png",
+      "artifact": "figures/user_activity.png"
+    },
+    {
+      "source": "outputs/webui/browser/overview.png",
+      "artifact": "screenshots/overview.png"
+    },
+    {
+      "source": "outputs/webui/browser/preferences.png",
+      "artifact": "screenshots/preferences.png"
+    },
+    {
+      "source": "outputs/webui/browser/fallback.png",
+      "artifact": "screenshots/fallback.png"
+    },
+    {
+      "source": "outputs/user_preferences_v1/comparison.json",
+      "artifact": "metrics/preferences-comparison.json"
+    },
+    {
+      "source": "outputs/recommendation_modes_v1/summary.json",
+      "artifact": "metrics/recommendations-acceptance.json"
+    },
+    {
+      "source": "outputs/webui/validation.json",
+      "artifact": "metrics/webui-validation.json"
+    },
+    {
+      "source": "outputs/webui/validation-cached.json",
+      "artifact": "metrics/webui-cache-validation.json"
+    },
+    {
+      "source": "outputs/release_audit_20261028/frozen-model-rmse.json",
+      "artifact": "metrics/frozen-model-rmse.json"
+    },
+    {
+      "source": "outputs/release_audit_20261028/topk.stdout",
+      "artifact": "metrics/topk.stdout.txt"
+    },
+    {
+      "source": "data/raw/LICENSE",
+      "artifact": "DATA_LICENSE.txt"
+    },
+    {
+      "source": "hdfs://master:9000/user/root/bookrec/processed/tag_features_v1/audit/part-*",
+      "artifact": "metrics/tag-audit.json"
+    },
+    {
+      "source": "hdfs://master:9000/user/root/bookrec/models/als_full_v1/metadata/part-00000",
+      "artifact": "metrics/model-metadata.json"
+    },
+    {
+      "source": "outputs/release_audit_20261028/data-inspection.stdout",
+      "artifact": "metrics/data-inspection.txt"
+    },
+    {
+      "source": "outputs/release_audit_20261028/cluster-check.stdout",
+      "artifact": "metrics/cluster-check.txt"
+    }
+  ]
+}
