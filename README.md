@@ -111,5 +111,6 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --mas
 - [实验结果与评价口径](docs/experiment_results.md)
 - [资源公开性与模型导出方案](docs/project_resources.md)
 - [交付快照及来源](docs/artifacts/README.md)
+- [多数据集适配第一阶段：依赖分析、独立配置与准备入口](docs/dataset_adaptation.md)（未选择第二个真实数据集；原 Goodbooks 流程不变）
 
 数据源为 [zygmuntz/goodbooks-10k](https://github.com/zygmuntz/goodbooks-10k)，上游 [LICENSE](https://github.com/zygmuntz/goodbooks-10k/blob/master/LICENSE) 声明 CC BY-SA 4.0。代码尚无独立 LICENSE。项目源码位于 [Private 仓库 AliceChennnn/spark-book-recommender](https://github.com/AliceChennnn/spark-book-recommender)，不是公共下载链接或可供未授权访问的源码二维码。
