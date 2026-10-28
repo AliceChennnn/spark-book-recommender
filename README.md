@@ -4,6 +4,8 @@
 
 偏好依据是评分历史，不代表用户实际读完图书。标签用于偏好解释，未作为新特征重训 ALS。封版核验日期为 **2026-10-28**，当前分支为 `feature/user-preferences`。
 
+当前 GitHub 仓库为 **Private**，访问源码需要获授权的 GitHub 账号。2026-10-28 认证连接器确认可访问；加固开始前本地 HEAD、origin 跟踪引用及远端该分支均为 `a8f3c78`，此前页面与封版材料已提交。本次加固仅保留为工作区改动，未执行 commit、push 或 merge。历史审计记录中的 `eee13c5` 和 404 是当时的检查结果，当前状态见 [资源清单](docs/project_resources.md)。
+
 ## 数据与评价摘要
 
 | 项目 | 已验证结果 | 范围 |
@@ -50,6 +52,8 @@ bash scripts/start_webui.sh
 
 本机访问 <http://127.0.0.1:8501>；Windows 使用 `http://<Ubuntu虚拟机IP>:8501`。本次为 <http://192.168.142.137:8501>，2026-10-27 用户确认 Windows 可访问，2026-10-28 恢复页面后本机及局域网健康检查为 200。
 
+当前仍监听 `0.0.0.0:8501`。建议保留 Windows 的 VMware NAT 访问方式，通过 Ubuntu 入站规则只允许本机和 Windows VMnet8 实际源地址访问 8501；[限制方案及验证 / 回退步骤](docs/webui.md#8501-访问限制方案仅报告未应用)已记录。本次没有改监听、防火墙或 VMware 配置，没有重启 WebUI。
+
 Streamlit 在前台运行，需保持终端打开；未设置系统自启。Docker 服务为 enabled，但容器 restart policy 为 no，重启后仍需恢复集群。详细顺序、资源还原、无停机验证及初始化边界见 [复现指南](docs/reproducibility.md)。本轮未实际重启虚拟机、恢复卷或重建容器。
 
 ## 使用
@@ -82,13 +86,16 @@ WebUI 的三个区域为概览、偏好、推荐。660、1000、2000 的历史�
 | src/recommenders.py、recommend.py | 可复用双模式推荐、兼容 CLI |
 | src/web_backend.py、web_job.py、app.py | 本机缓存、安全桥接与页面 |
 | infra/ | 既有镜像定义、Compose 覆盖配置及恢复脚本 |
-| scripts/、tests/ | 检查、验收、页面启动与 41 项测试 |
+| scripts/、tests/ | 检查、验收、页面启动、覆盖保护与业务测试 |
 | docs/artifacts/ | 可提交的真实指标、演示快照、图表、截图与校验和 |
 | data/、models/、outputs/、.venv/ | 数据、导出、运行产物、环境，不提交 Git |
 
 ## 验证与交付
 
 ```bash
+.venv/bin/python -m unittest discover -s tests -p test_output_safety.py -v
+# 仅在容器 /tmp 创建临时测试数据，空 PipelineModel 不执行 fit：
+docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --master 'local[1]' tests/test_output_safety_spark.py
 .venv/bin/python -m unittest discover -s tests -p test_preferences.py -v
 .venv/bin/python -m unittest discover -s tests -p 'test_web*.py' -v
 .venv/bin/python -m pip check
@@ -96,11 +103,13 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --mas
 docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --master 'local[2]' tests/test_recommenders.py
 ```
 
-本轮 5+11+11+14=41 项通过。只读复测命令和会训练 / 覆盖写入的入口边界见复现指南。
+本次加固：覆盖保护 14 项、临时 Spark 写入 2 项、偏好 11 项、WebUI / 后端 14 项均通过，共 41 项；未重跑标签 / 推荐 Spark 测试或正式评价。历史封版的 5+11+11+14=41 项记录仍原样保留。只读复测命令和副作用入口见 [复现指南](docs/reproducibility.md#覆盖写入保护)。
 
-- [验收表、Git 提交建议与 PPT 选图](docs/release_checklist.md)
+`prepare_data.py`、`train_als.py`、`train_final.py` 保留原 spark-submit 入口与输出路径，默认在读取数据 / 训练前拒绝任何已有目标；只有完整的 `--overwrite` 参数才授权替换该脚本的输出。模型保存默认不调用 overwrite，Parquet 使用 errorifexists，再次防止误覆盖。无参数且目标不存在时仍会正常准备数据或训练；`--overwrite` 也会实际运行原流程，不能用于只读验证。本次未执行这些业务入口。
+
+- [历史封版验收、当时的 Git 提交建议与 PPT 选图](docs/release_checklist.md)（审计起点 eee13c5；当前提交状态见资源清单）
 - [实验结果与评价口径](docs/experiment_results.md)
 - [资源公开性与模型导出方案](docs/project_resources.md)
 - [交付快照及来源](docs/artifacts/README.md)
 
-数据源为 [zygmuntz/goodbooks-10k](https://github.com/zygmuntz/goodbooks-10k)，上游 [LICENSE](https://github.com/zygmuntz/goodbooks-10k/blob/master/LICENSE) 声明 CC BY-SA 4.0。代码尚无独立 LICENSE。项目 GitHub 地址为 <https://github.com/AliceChennnn/spark-book-recommender>；2026-10-28 未登录 API 返回 404，尚不能作为已验证公开下载链接。
+数据源为 [zygmuntz/goodbooks-10k](https://github.com/zygmuntz/goodbooks-10k)，上游 [LICENSE](https://github.com/zygmuntz/goodbooks-10k/blob/master/LICENSE) 声明 CC BY-SA 4.0。代码尚无独立 LICENSE。项目源码位于 [Private 仓库 AliceChennnn/spark-book-recommender](https://github.com/AliceChennnn/spark-book-recommender)，不是公共下载链接或可供未授权访问的源码二维码。

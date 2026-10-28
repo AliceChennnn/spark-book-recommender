@@ -1,20 +1,21 @@
+"""Train the final ALS model; existing output requires --overwrite."""
 
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
-from pyspark.ml.recommendation import ALS
-from pyspark.ml.evaluation import RegressionEvaluator
+import argparse
+
+from output_safety import add_overwrite_argument, ensure_outputs_available, save_model
+
 
 ROOT = "hdfs://master:9000/user/root/bookrec"
+MODEL_PATH = f"{ROOT}/models/als_full_v1"
 
-spark = (
-    SparkSession.builder
-    .appName("BookRec-ALS-Final")
-    .getOrCreate()
-)
 
-spark.sparkContext.setLogLevel("WARN")
+def run(spark, overwrite=False):
+    ensure_outputs_available(spark, [MODEL_PATH], overwrite=overwrite)
 
-try:
+    from pyspark.sql import functions as F
+    from pyspark.ml.recommendation import ALS
+    from pyspark.ml.evaluation import RegressionEvaluator
+
     ratings = spark.read.parquet(
         f"{ROOT}/processed/ratings"
     )
@@ -113,12 +114,30 @@ try:
         f"{(baseline_rmse - als_rmse) / baseline_rmse * 100:.2f}%"
     )
 
-    model_path = f"{ROOT}/models/als_full_v1"
-    model.write().overwrite().save(model_path)
+    save_model(model, MODEL_PATH, overwrite=overwrite)
 
-    print(f"\nModel saved: {model_path}")
+    print(f"\nModel saved: {MODEL_PATH}")
 
     predictions.unpersist()
 
-finally:
-    spark.stop()
+
+def build_parser():
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    add_overwrite_argument(parser)
+    return parser
+
+
+def main(argv=None):
+    args = build_parser().parse_args(argv)
+    from pyspark.sql import SparkSession
+
+    spark = SparkSession.builder.appName("BookRec-ALS-Final").getOrCreate()
+    try:
+        spark.sparkContext.setLogLevel("WARN")
+        return run(spark, overwrite=args.overwrite)
+    finally:
+        spark.stop()
+
+
+if __name__ == "__main__":
+    main()

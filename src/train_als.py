@@ -1,19 +1,21 @@
+"""Train the pilot ALS model; existing output requires --overwrite."""
 
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
-from pyspark.ml.recommendation import ALS
-from pyspark.ml.evaluation import RegressionEvaluator
+import argparse
+
+from output_safety import add_overwrite_argument, ensure_outputs_available, save_model
+
 
 HDFS_ROOT = "hdfs://master:9000/user/root/bookrec"
 MODEL_PATH = f"{HDFS_ROOT}/models/als_pilot"
 
-spark = SparkSession.builder \
-    .appName("BookRec-ALS-Pilot") \
-    .getOrCreate()
 
-spark.sparkContext.setLogLevel("WARN")
+def run(spark, overwrite=False):
+    ensure_outputs_available(spark, [MODEL_PATH], overwrite=overwrite)
 
-try:
+    from pyspark.sql import functions as F
+    from pyspark.ml.recommendation import ALS
+    from pyspark.ml.evaluation import RegressionEvaluator
+
     # 1. 读取预处理后的评分数据
     ratings = spark.read.parquet(
         f"{HDFS_ROOT}/processed/ratings"
@@ -117,11 +119,30 @@ try:
     print(f"RMSE reduction: {baseline_rmse - rmse:.4f}")
 
     # 8. 保存模型至 HDFS
-    model.write().overwrite().save(MODEL_PATH)
+    save_model(model, MODEL_PATH, overwrite=overwrite)
     print(f"\nModel saved: {MODEL_PATH}")
 
     predictions.unpersist()
     sample.unpersist()
 
-finally:
-    spark.stop()
+
+def build_parser():
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    add_overwrite_argument(parser)
+    return parser
+
+
+def main(argv=None):
+    args = build_parser().parse_args(argv)
+    from pyspark.sql import SparkSession
+
+    spark = SparkSession.builder.appName("BookRec-ALS-Pilot").getOrCreate()
+    try:
+        spark.sparkContext.setLogLevel("WARN")
+        return run(spark, overwrite=args.overwrite)
+    finally:
+        spark.stop()
+
+
+if __name__ == "__main__":
+    main()

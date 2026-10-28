@@ -117,7 +117,7 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --mas
 docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit --master 'local[2]' tests/test_recommenders.py
 ```
 
-本轮共 41 项通过。推荐单元测试使用固定预测桩，不将其数值作为真实 ALS 指标。
+以上是历史封版的 41 项测试入口。推荐单元测试使用固定预测桩，不将其数值作为真实 ALS 指标。本次覆盖保护的专项测试见下文，未重跑标签 / 推荐 Spark 测试或正式指标。
 
 现有集群的真实只读检查：
 
@@ -130,7 +130,7 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
   --master spark://master:7077 --total-executor-cores 2 src/evaluate_topk.py
 ```
 
-RMSE 不通过 train_final.py 复查，该脚本会 fit 并覆盖保存模型。只读审计脚本使用已有 ALSModel.transform 和 RegressionEvaluator：
+RMSE 不通过 train_final.py 复查：目标不存在或显式授权覆盖时，该脚本仍会 fit 并保存模型；默认会先拒绝已有目标。只读审计脚本使用已有 ALSModel.transform 和 RegressionEvaluator：
 
 ```bash
 mkdir -p outputs/audit-new
@@ -143,13 +143,46 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
 
 可选 Chromium 测试的共享库 / 字体要求见 webui.md。本轮 41 项测试通过不代表在清空 /tmp 的机器上重新验证了 Chromium 安装；页面本身不依赖它。
 
-## 本轮未执行的副作用操作
+## 覆盖写入保护
+
+三个入口保留原有 spark-submit 用法、路径、训练参数与数据划分，新增 `--overwrite`（默认为 false，不接受缩写或 `--overwrite=false`）。`--help` 和模块导入不会创建 SparkSession，可在没有 PySpark 的本机查看帮助：
+
+```bash
+.venv/bin/python src/prepare_data.py --help
+.venv/bin/python src/train_als.py --help
+.venv/bin/python src/train_final.py --help
+```
+
+| 入口 | 固定输出（相对 hdfs://master:9000/user/root/bookrec） |
+| --- | --- |
+| prepare_data.py | processed/ratings 和 processed/books；任一已存在则默认全部拒绝，读取数据和首个写入前检查两个路径 |
+| train_als.py | models/als_pilot；已有模型则在读取评分和 fit 前拒绝 |
+| train_final.py | models/als_full_v1；已有模型则在读取评分和 fit 前拒绝 |
+
+检查使用目标 URI 自己的 Hadoop FileSystem，连接 / 权限错误直接失败，不当作“目标不存在”。保存时模型使用默认 MLWriter，Parquet 使用 errorifexists；即使前置检查后出现同名目标，写入器仍拒绝替换。只有给上述原命令的脚本参数追加完整的 `--overwrite` 才允许该入口覆盖自己的固定目标；prepare_data.py 的授权作用于两个输出。它不是试运行开关，本次没有对生产目标使用。
+
+保护不提供跨路径事务或多进程锁：第二个 Parquet 写入失败时可能留下第一个新输出，真正同时执行的作业仍应避免；显式覆盖时也可能发生部分替换，不会自动备份或回滚。失败重试默认拒绝已有的完整 / 部分目录。只读核验应继续使用审计脚本，不运行训练入口；标签入口仍保持已有的新目录保护策略。
+
+新增验证命令只操作测试桩或新建的容器 file:///tmp 临时目录：
+
+```bash
+.venv/bin/python -m unittest discover -s tests -p test_output_safety.py -v
+docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
+  --master 'local[1]' tests/test_output_safety_spark.py
+```
+
+2026-10-28：14 项纯 Python 保护测试 + 2 项实际 Spark 临时写入测试通过；后者使用空 PipelineModel 验证模型保存，未执行任何 fit。覆盖默认拒绝、完整参数授权、文件系统异常、第二目标冲突、写入时再次拒绝及异常后停止本次 SparkSession。另有偏好 11 项、后端 / WebUI 14 项回归通过，共 41 项。本次未执行正式训练、冻结模型复测或 Top-K 实验。
+
+前后检查中，HDFS processed / models 的 444 行递归目录清单完全一致，61 份历史 artifacts / 本地演示文件 SHA-256 未变；三个脚本的原计算部分也通过 AST 比对（排除入口和保存策略）。WebUI 保持同一进程，loopback / NAT 地址健康检查均为 HTTP 200；本次未从 Windows 再做跨系统浏览器验证。
+
+## 本次未执行的业务副作用操作
 
 | 入口 | 副作用与状态 |
 | --- | --- |
-| prepare_data.py | overwrite processed/ratings、processed/books；未执行 |
+| prepare_data.py | 默认拒绝已有输出，仅 --overwrite 授权替换 processed/ratings、processed/books；未执行 |
 | analyze.py、visualize.py | 覆盖统计 / 图片；使用已有结果，未执行 |
-| train_als.py、tune_als.py、train_final.py | 会 fit，部分覆盖模型；未执行 |
+| train_als.py、train_final.py | 会 fit，已有模型默认拒绝，--overwrite 授权替换；未执行 |
+| tune_als.py | 调参会 fit，不在本次加固范围；未执行 |
 | prepare_tags.py | 写新目录，已有路径拒绝；本轮仅读原审计 |
 | 虚拟机重启、容器重建、卷备份恢复 | 可能中断服务；未执行 |
 | 模型权重 / 数据卷导出 | 仅提供方案，未执行 |

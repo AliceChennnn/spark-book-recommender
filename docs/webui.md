@@ -37,6 +37,21 @@ bash scripts/start_webui.sh
 
 启动脚本绑定所有网卡；若虚拟机 IP 变化，用 hostname -I 查询实际网卡地址，使用 Ubuntu 的地址而非 Docker 的 172.x 地址。Windows 与虚拟机需要网络互通。本次用户已从 Windows 浏览器确认“能正常访问”，没有更改防火墙、虚拟机网络或集群配置。
 
+## 8501 访问限制方案（仅报告，未应用）
+
+2026-10-28 加固时只读检查：`scripts/start_webui.sh` 显式配置 `0.0.0.0:8501`，实际监听一致；Ubuntu NAT 网卡为 ens33，地址 192.168.142.137/24，网关 192.168.142.2，本机健康检查正常。监听所有网卡会使所有网络可达来源都有机会访问页面，包括触发未缓存的 Spark 请求；NAT 本身不等于用户认证。本次没有停止 / 重启 WebUI，未更改启动脚本、Streamlit 配置、防火墙、VMware 或集群配置。
+
+建议保留现有监听和 Windows URL，通过 **Ubuntu 虚拟机入站过滤，只限制 TCP 8501**：先允许本机 loopback，再允许 ens33 上 Windows VMnet8 的实际源 IPv4 到本机 8501，最后拒绝其他来源到 8501，检查规则顺序使专用允许项在拒绝项之前。不要放行整个 /24 网段；同时检查 IPv6，防止以后监听 IPv6 时绕过限制。UFW 支持按来源 IP 和端口设置允许项，见 [Ubuntu 防火墙文档](https://ubuntu.com/server/docs/how-to/security/firewalls/)。这是方案，不是已应用的规则。
+
+实施前需要确认的输入与顺序：
+
+1. Windows 执行只读 `Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias '*VMnet8*'` 查宿主机虚拟网卡地址，在 Windows 打开页面时用 Ubuntu `ss -tn '( sport = :8501 )'` 核对实际来源。当前没有活动连接可确认源地址；不能把 VM 网关 .2、Windows 物理网卡或猜测的 .1 当作已确认来源。
+2. 在 Ubuntu 控制台核对现有防火墙状态和规则，记录现状及本次规则的回退方式。若已有 UFW 则只准备 8501 的有序规则；若尚未启用，不直接执行 ufw enable 或改全局默认策略，应先单独审阅仅作用于本机 INPUT/8501 的规则，避免影响 SSH 和现有 Docker 通信。不改 FORWARD、DOCKER、DOCKER-USER、NAT 或集群端口。
+3. 将准确源地址代入规则后再由操作者授权应用；源地址若经额外转发被共享，应先确认拓扑，避免把共享网关加入白名单造成过宽放行。本方案不需要为 Windows 宿主机直连 VM NAT 地址新增端口转发，也不切换桥接网卡。
+4. 应用后分别新建连接验证：Ubuntu 的 `127.0.0.1:8501/_stcore/health` 和 Windows 的原地址页面 / WebSocket / 下载可用，未授权来源连接被拒绝。防火墙可能保留已建立连接，不能仅凭旧浏览器会话判断规则有效；同时只读核对集群健康。失败时只撤回本次 8501 规则，不清空防火墙或重建容器。
+
+将监听直接改为 127.0.0.1 会中断 Windows 按原 URL 直连，因此不作为本轮方案。保持 CORS / XSRF 保护开启；本机独立检查进程解析到两项均为 true，启动脚本没有关闭它们，但未声称读取了在线进程的全部有效配置。这些选项不能替代源地址限制或登录认证，见 [Streamlit 配置说明](https://docs.streamlit.io/develop/api-reference/configuration/config.toml)。方案应用前，当前监听风险仍然存在；本轮不新增账号、代理或 TLS 业务功能。
+
 ## 页面功能与演示流程
 
 1. 数据概览：用户数来自 user_activity.csv 汇总，评分数来自 rating_distribution.csv 汇总，图书数来自本地 books.csv 唯一 book_id。展示已有评分分布、热门图书、用户活跃度 CSV 及三张原 Matplotlib PNG。查看页面不扫描 ratings.csv，也不启动 Spark。
