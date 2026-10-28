@@ -5,7 +5,8 @@
 ## 处理规则
 
 - `goodreads_book_id` 转为 long；`book_id`、`tag_id` 使用 int。`tag_id = 0` 合法。
-- CSV 使用显式 schema 和 FAILFAST；统计空值、无效 ID、非正计数并过滤这些记录。各项异常计数可能重叠。
+- CSV 使用显式 schema 和 FAILFAST；无法解析为指定整数类型或超出类型范围的值直接失败。空输入，`goodreads_book_id` / `tag_id` / `count` 任一空值，`goodreads_book_id <= 0` 或 `tag_id < 0` 都是必须修复的异常，在过滤、去重和读取映射前报错，不再静默丢弃。
+- 只有 ID 合法且字段非空的 `count <= 0` 记录继续按原规则过滤；`nonpositive_rows` 等审计字段保持原口径。异常计数可重叠，例如无效 ID 且 count 为 0 时仍必须报错，不能由非正计数过滤掩盖。错误消息包含输入计数，调用方传入的审计字典也保留计数。
 - 对有效记录按 `(goodreads_book_id, tag_id)` 取最大 count。count 是图书书架累计计数，求和会重复累计；最大值策略也不依赖输入顺序。
 - 通过 `books.goodreads_book_id = book_tags.goodreads_book_id` 获取内部 `book_id`，再按 `tag_id` 关联字典。不会按内部 book_id 连接标签表。
 - 图书映射必须双向唯一。标签字典完全重复记录可以去重，同一 tag_id 对应多个规范化名字则失败。空字典项、无效映射和关联失败都会阻止输出。
@@ -43,7 +44,13 @@ docker exec -w /workspace/bookrec master /usr/local/spark/bin/spark-submit \
 
 脚本在写入前、重新读取 Parquet 后均检查行数、唯一键、字段有效性和权重和（误差容限 1e-9）。audit 保存输入数量、清洗及去重数量、关联失败数量、覆盖率和读回检查结果。
 
-## 本次验证结果（2026-10-27）
+## 输入加固验证（2026-10-28）
+
+11 项小规模测试全部通过，使用人工 DataFrame 和新建的容器 file:///tmp CSV，不读取已有标签输入或重跑正式标签预处理，也不写 HDFS。测试覆盖空字段、零 / 负 ID、空表、不可解析 / 越界整数、非正计数过滤及审计；异常 CSV 在读取不存在的图书映射前报错，目标目录不产生。原 max 去重、交叉 Goodreads ID 关联和分别归一化测试继续保留。
+
+正常 Goodbooks-10k 的历史空值 / 无效 ID 数均为 0，因此新增门禁不改变其筛选、去重、ID 关联或权重结果；策略版本 `goodbooks-topics-v1` 不变。下述原始预处理结果保留，本次不重新生成或覆盖。
+
+## 历史验证结果（2026-10-27）
 
 5 项小规模 Spark 测试全部通过。上述集群命令已实际执行成功，生成默认输出目录。
 

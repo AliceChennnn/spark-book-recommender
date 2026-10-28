@@ -15,6 +15,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CONTAINER_ROOT = Path("/workspace/bookrec")
+# Immutable identity of the shipped v1 snapshots. Future data/model releases use
+# a new BOOKREC_DATA_VERSION; the marker is read once, never discovered via HDFS.
 DATA_VERSION = "goodbooks10k-processed-v1-als_full_v1-topics_v1"
 SCORE_TYPES = {"als": "als_predicted_rating", "popularity": "training_rating_count"}
 
@@ -98,6 +100,8 @@ class WebBackend:
         self.ttl = ttl
         self.runner = runner or subprocess.run
         self.data_version = os.environ.get("BOOKREC_DATA_VERSION", DATA_VERSION)
+        if not self.data_version.strip():
+            raise BackendError("BOOKREC_DATA_VERSION 不能为空；请使用明确的数据 / 模型版本标识。")
         self.work = self.root / "outputs" / "webui"
         self._job_lock = threading.Lock()
 
@@ -115,6 +119,10 @@ class WebBackend:
 
     def prepare_demo_manifest(self):
         """Register already verified snapshots without launching any Spark job."""
+        # These source directories contain the shipped Goodbooks v1 results.
+        # A namespace change must never relabel them as another dataset/model.
+        if self.data_version != DATA_VERSION:
+            raise BackendError("内置 v1 演示快照不能注册为其他数据 / 模型版本；请保留原版本标识。")
         entries = {}
         for kind, users in (("preferences", (660, 1000, 2000)),
                             ("recommendations", (660, 1000, 2000, 661, 999999))):

@@ -43,12 +43,25 @@ def normalize_tag_name(column):
     return F.regexp_replace(F.lower(F.trim(column)), r"[\s_]+", "-")
 
 
-def valid_book_tags(frame):
-    return frame.filter(
-        (F.col("goodreads_book_id") > 0)
-        & (F.col("tag_id") >= 0)
-        & (F.col("count") > 0)
-    )
+def valid_book_tags(frame, audit=None):
+    """Fail on corrupt input; only nonpositive counts may be filtered out."""
+    stats = frame.agg(
+        F.count("*").alias("raw_rows"),
+        F.sum(F.when(
+            F.col("goodreads_book_id").isNull() | F.col("tag_id").isNull()
+            | F.col("count").isNull(), 1
+        ).otherwise(0)).alias("null_rows"),
+        F.sum(F.when(
+            (F.col("goodreads_book_id") <= 0) | (F.col("tag_id") < 0), 1
+        ).otherwise(0)).alias("invalid_id_rows"),
+        F.sum(F.when(F.col("count") <= 0, 1).otherwise(0)).alias("nonpositive_rows"),
+        F.countDistinct("goodreads_book_id", "tag_id").alias("raw_unique_pairs"),
+    ).first().asDict()
+    if audit is not None:
+        audit.update(stats)
+    if not stats["raw_rows"] or stats["null_rows"] or stats["invalid_id_rows"]:
+        raise ValueError(f"Invalid book_tags input: {stats}; null fields / invalid IDs are fatal")
+    return frame.filter(F.col("count") > 0)
 
 
 def deduplicate_book_tags(frame):
@@ -131,20 +144,8 @@ def prepare_tags(spark, hdfs_root, output_root):
     try:
         raw = keep(spark.read.option("header", True).option("mode", "FAILFAST")
                    .schema(BOOK_TAG_SCHEMA).csv(f"{hdfs_root}/raw/book_tags.csv"))
-        raw_stats = raw.agg(
-            F.count("*").alias("raw_rows"),
-            F.sum(F.when(
-                F.col("goodreads_book_id").isNull() | F.col("tag_id").isNull()
-                | F.col("count").isNull(), 1
-            ).otherwise(0)).alias("null_rows"),
-            F.sum(F.when(
-                (F.col("goodreads_book_id") <= 0) | (F.col("tag_id") < 0), 1
-            ).otherwise(0)).alias("invalid_id_rows"),
-            F.sum(F.when(F.col("count") <= 0, 1).otherwise(0)).alias("nonpositive_rows"),
-            F.countDistinct("goodreads_book_id", "tag_id").alias("raw_unique_pairs"),
-        ).first().asDict()
-        report.update(raw_stats)
-        valid = keep(valid_book_tags(raw))
+        # Validate every raw row before count filtering can hide invalid IDs/nulls.
+        valid = keep(valid_book_tags(raw, audit=report))
         report["valid_positive_rows"] = valid.count()
         deduped = keep(deduplicate_book_tags(valid))
         report["deduplicated_rows"] = deduped.count()
